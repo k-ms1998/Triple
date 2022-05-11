@@ -63,9 +63,13 @@ public class PointService {
         return String.valueOf(pointRepository.removeReview(body));
     }
 
-    public Integer getPoints(EventBody body) {
+    public String getPoints(EventBody body) {
 
-        return null;
+        return String.valueOf(queryFactory
+                .select(pointLogs.point.sum())
+                .from(pointLogs)
+                .where(pointLogs.user.id.eq(body.getUserId()))
+                .fetchOne());
     }
 
     public Long fetchReviewCount(EventBody body) {

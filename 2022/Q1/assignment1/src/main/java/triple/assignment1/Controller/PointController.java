@@ -27,9 +27,8 @@ public class PointController {
 
     @GetMapping("/getPoints")
     public String getPoints(@RequestBody EventBody request) {
-        pointService.getPoints(request);
 
-        return "";
+        return pointService.getPoints(request);
     }
 
 }
