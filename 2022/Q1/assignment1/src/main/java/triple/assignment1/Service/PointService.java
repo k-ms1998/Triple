@@ -30,25 +30,13 @@ public class PointService {
 
     @Transactional
     public String addPoints(EventBody body) {
-        int tmpPoint = 0;
+        int curPoint = 0;
         List<PointType> pointTypes = new ArrayList<>();
 
-        if (!body.getContent().isEmpty()) {
-            tmpPoint += 1;
-            pointTypes.add(PointType.REVIEW);
-        }
-        if (body.getAttachedPhotoIds().size() > 0) {
-            tmpPoint += 1;
-            pointTypes.add(PointType.PHOTO);
-        }
-        if( fetchReviewCount(body) == 0L) {
-            tmpPoint += 1;
-            pointTypes.add(PointType.FIRST);
-        }
-
+        calculateNewPoint(body, pointTypes);
         pointRepository.save(body, pointTypes);
 
-        return String.valueOf(tmpPoint);
+        return String.valueOf(curPoint);
     }
 
     @Transactional
@@ -61,6 +49,25 @@ public class PointService {
     public String removePoints(EventBody body) {
 
         return String.valueOf(pointRepository.removeReview(body));
+    }
+
+    private int calculateNewPoint(EventBody body, List<PointType> pointTypes) {
+        int tmpPoint = 0;
+
+        if (!body.getContent().isEmpty()) {
+            tmpPoint += 1;
+            pointTypes.add(PointType.REVIEW);
+        }
+        if (body.getAttachedPhotoIds().size() > 0) {
+            tmpPoint += 1;
+            pointTypes.add(PointType.PHOTO);
+        }
+        if (fetchReviewCount(body) == 0L) {
+            tmpPoint += 1;
+            pointTypes.add(PointType.FIRST);
+        }
+
+        return tmpPoint;
     }
 
     public String getPoints(EventBody body) {

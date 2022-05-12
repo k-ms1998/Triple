@@ -123,18 +123,15 @@ public class PointRepository{
     }
 
     private int checkUpdatedAttachedPhoto(Long before, int after) {
-        if (before > 0L) {
-            if (after > 0) {
-                return 0;
-            } else {
-                return -1;
-            }
+        int beforeP = before > 0L ? 1 : 0;
+        int afterP = after > 0 ? 1 : 0;
+
+        if (beforeP == afterP) {
+            return 0;
+        } else if (beforeP < afterP) {
+            return 1;
         } else {
-            if (after > 0) {
-                return 1;
-            } else {
-                return 0;
-            }
+            return -1;
         }
     }
 
