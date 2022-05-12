@@ -33,6 +33,10 @@ public class PointService {
         int curPoint = 0;
         List<PointType> pointTypes = new ArrayList<>();
 
+        //Check if the user has already written a review at a given place -> Prevents users from taking advantage of the system and gaining extra points
+        if (checkIfExists(body)) {
+            return "User has already written a review";
+        }
         calculateNewPoint(body, pointTypes);
         pointRepository.save(body, pointTypes);
 
@@ -49,6 +53,18 @@ public class PointService {
     public String removePoints(EventBody body) {
 
         return String.valueOf(pointRepository.removeReview(body));
+    }
+
+    public boolean checkIfExists(EventBody body) {
+        Review review = queryFactory
+                .selectFrom(QReview.review)
+                .where(this.review.place.id.eq(body.getPlaceId()), this.review.userId.eq(body.getUserId()))
+                .fetchFirst();
+
+        if (review != null) {
+            return true;
+        }
+        return false;
     }
 
     private int calculateNewPoint(EventBody body, List<PointType> pointTypes) {

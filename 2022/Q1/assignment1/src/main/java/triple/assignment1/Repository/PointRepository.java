@@ -45,7 +45,7 @@ public class PointRepository{
         placeRepository.save(place);
 
         // Review 저장
-        Review review = new Review(reviewId, new Place(placeId), content);
+        Review review = new Review(reviewId, new Place(placeId), content, userId);
         reviewRepository.save(review);
 
         refreshContext();

@@ -67,4 +67,13 @@ class PointServiceTest {
         Assertions.assertThat(points).isEqualTo(String.valueOf(3));
 
     }
+
+    @Test
+    void checkExistingReview() {
+        createEventBody();
+
+        boolean ifExists = pointService.checkIfExists(body);
+
+        Assertions.assertThat(ifExists).isTrue();
+    }
 }
