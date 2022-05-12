@@ -62,11 +62,13 @@ public class InitTestData {
             pointLogsList.add(new PointLogs(new User("user_01"), "review_01", PointType.FIRST, 1));
             pointLogsList.add(new PointLogs(new User("user_01"), "review_01", PointType.REVIEW, 1));
             pointLogsList.add(new PointLogs(new User("user_01"), "review_01", PointType.PHOTO, 1));
-            pointLogsList.add(new PointLogs(new User("user_01"), "review_01", PointType.UPDATE, -1));
 
             pointLogsList.add(new PointLogs(new User("user_01"), "review_02", PointType.FIRST, 1));
             pointLogsList.add(new PointLogs(new User("user_01"), "review_02", PointType.REVIEW, 1));
             pointLogsList.add(new PointLogs(new User("user_01"), "review_02", PointType.DELETE, -2));
+
+            pointLogsList.add(new PointLogs(new User("user_02"), "review_03", PointType.FIRST, 1));
+            pointLogsList.add(new PointLogs(new User("user_02"), "review_03", PointType.REVIEW, 1));
 
             pointLogsList
                     .forEach(l -> em.persist(l));
@@ -100,9 +102,11 @@ public class InitTestData {
         public void init() {
             Review review01 = new Review("review_01", new Place("place_01"), "Good!", "user_01");
             Review review02 = new Review("review_02", new Place("place_02"), "Good!", "user_01");
+            Review review03 = new Review("review_03", new Place("place_02"), "Good!", "user_02");
 
             em.persist(review01);
             em.persist(review02);
+            em.persist(review03);
         }
     }
 

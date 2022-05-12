@@ -35,7 +35,7 @@ class QueryPointLogsRepositoryTest {
         int pointsByReview02 = qPointLogsRepository.getPointsByReview("user_01", "review_02");
 
 
-        Assertions.assertThat(pointsByReview01).isEqualTo(2);
+        Assertions.assertThat(pointsByReview01).isEqualTo(3);
         Assertions.assertThat(pointsByReview02).isEqualTo(0);
     }
 }

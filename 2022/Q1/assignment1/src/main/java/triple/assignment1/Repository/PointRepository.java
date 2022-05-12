@@ -51,11 +51,7 @@ public class PointRepository{
         refreshContext();
 
         //AttachedPhoto 저장
-        body.getAttachedPhotoIds()
-                .forEach(i -> {
-                    AttachedPhoto attachedPhoto = new AttachedPhoto(i, review);
-                    attachedPhotoRepository.save(attachedPhoto);
-                });
+        saveAttachedPhotos(body.getAttachedPhotoIds(), review);
         
         //PointLogs 저장
         pointTypes
@@ -84,11 +80,7 @@ public class PointRepository{
         refreshContext();
 
         //2. Add attached photos associated w/ the review
-        body.getAttachedPhotoIds()
-                .forEach(i -> {
-                    AttachedPhoto attachedPhoto = new AttachedPhoto(i, new Review(reviewId));
-                    attachedPhotoRepository.save(attachedPhoto);
-                });
+        saveAttachedPhotos(body.getAttachedPhotoIds(), new Review(reviewId));
         refreshContext();
 
         //Add PointLog
@@ -121,6 +113,13 @@ public class PointRepository{
         refreshContext();
 
         return pointsByReview;
+    }
+
+    private void saveAttachedPhotos(List<String> photoIds, Review review) {
+        photoIds.forEach(i -> {
+                    AttachedPhoto attachedPhoto = new AttachedPhoto(i, review);
+                    attachedPhotoRepository.save(attachedPhoto);
+                });
     }
 
     private int checkUpdatedAttachedPhoto(Long before, int after) {
