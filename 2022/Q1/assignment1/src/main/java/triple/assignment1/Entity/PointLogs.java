@@ -1,11 +1,13 @@
 package triple.assignment1.Entity;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@ToString(of = {"id", "review", "type", "point"})
 public class PointLogs {
 
     @Id

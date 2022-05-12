@@ -18,6 +18,11 @@ public class QueryAttachedPhotoRepository {
 
     private QAttachedPhoto attachedPhoto = QAttachedPhoto.attachedPhoto;
 
+    /**
+     * 특정 리뷰에 첨부된 사진들을 삭제
+     * @param reviewId
+     * @return
+     */
     public Long deleteByReviewId(String reviewId) {
         return queryFactory
                 .delete(QAttachedPhoto.attachedPhoto)

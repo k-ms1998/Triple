@@ -18,11 +18,16 @@ public class QueryPointLogsRepository {
 
     private QPointLogs pointLogs = QPointLogs.pointLogs;
 
-    public int getPointsByReview(String reviewId) {
+    /**
+     * POINT_LOGS 테이블을 참조해서 유저마다 현재 적립된 포인트 조회
+     * @param reviewId
+     * @return
+     */
+    public int getPointsByReview(String userId, String reviewId) {
         return queryFactory
                 .select(pointLogs.point.sum())
                 .from(pointLogs)
-                .where(pointLogs.review.eq(reviewId))
+                .where(pointLogs.review.eq(reviewId), pointLogs.user.id.eq(userId))
                 .fetchOne();
     }
 

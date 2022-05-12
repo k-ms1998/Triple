@@ -13,10 +13,6 @@ public class Place implements Persistable<String> {
     @Column(name = "placeId")
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
-
     protected Place() {
 
     }

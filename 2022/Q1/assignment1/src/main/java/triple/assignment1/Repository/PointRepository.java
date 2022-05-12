@@ -102,6 +102,7 @@ public class PointRepository{
 
 
     public int removeReview(EventBody body) {
+        String userId = body.getUserId();
         String reviewId = body.getReviewId();
 
         //Delete AttachedPhotos
@@ -113,7 +114,7 @@ public class PointRepository{
         reviewRepository.delete(review);
 
         //Save Log
-        int pointsByReview = qPointLogsRepository.getPointsByReview(reviewId);
+        int pointsByReview = qPointLogsRepository.getPointsByReview(userId, reviewId);
         PointLogs pointLog = new PointLogs(new User(body.getUserId()), reviewId, PointType.DELETE, (-1)*pointsByReview);
         pointLogsRepository.save(pointLog);
 
