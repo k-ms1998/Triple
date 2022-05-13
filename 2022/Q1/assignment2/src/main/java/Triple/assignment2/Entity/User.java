@@ -16,7 +16,7 @@ public class User {
     @Column(name = "userId")
     private Long id;
 
-    protected User() {
+    public User() {
     }
 
     public User(Long id) {
