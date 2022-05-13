@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 
 import static Triple.assignment2.Entity.QCity.city;
 
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -38,12 +39,12 @@ public class CityService {
 
     private boolean checkDuplicateCity(CityBody body) {
 
-        City city = queryFactory
-                .selectFrom(QCity.city)
-                .where(QCity.city.name.eq(body.getName()))
+        City findCity = queryFactory
+                .selectFrom(city)
+                .where(city.name.eq(body.getName()))
                 .fetchFirst();
 
-        if (city != null) {
+        if (findCity != null) {
             return true;
         }
         return false;
