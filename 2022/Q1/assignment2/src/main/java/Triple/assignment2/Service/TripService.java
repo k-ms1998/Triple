@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.util.List;
 
 import static Triple.assignment2.Entity.QTrip.trip;
 
@@ -51,6 +52,15 @@ public class TripService {
         return new ResBody(200, "Trip Saved");
     }
 
+    public ResBody fetchTrips(TripBody body) {
+        Long userId = body.getUserId();
+
+        List<Trip> findTrips = findTripsByUser(userId);
+
+
+        return new ResBody(200, "Message");
+    }
+
     private boolean checkStartDate(LocalDate startDate) {
         LocalDate today = LocalDate.now();
 
@@ -83,5 +93,12 @@ public class TripService {
 
     private Trip createTrip(TripBody body, LocalDate startDate, LocalDate endDate) {
         return new Trip(new City(Long.valueOf(body.getCity())), new User(body.getUserId()), startDate, endDate);
+    }
+
+    private List<Trip> findTripsByUser(Long userId) {
+        return queryFactory
+                .selectFrom(trip)
+                .where(trip.user.id.eq(userId))
+                .fetch();
     }
 }

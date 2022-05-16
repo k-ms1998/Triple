@@ -6,6 +6,7 @@ import Triple.assignment2.Service.TripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,5 +21,11 @@ public class TripController {
     public ResBody saveTrip(@RequestBody TripBody request) {
 
         return tripService.save(request);
+    }
+
+    @GetMapping("/trips")
+    public ResBody fetchTrips(@RequestBody TripBody request) {
+
+        return tripService.fetchTrips(request);
     }
 }
