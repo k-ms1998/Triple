@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.time.LocalDate;
+
+import static Triple.assignment2.Entity.QCity.*;
 import static Triple.assignment2.Entity.QCity.city;
 
 
@@ -50,4 +53,27 @@ public class CityService {
         return false;
     }
 
+    public ResBody fetchCity(CityBody body) {
+        Long cityId = body.getId();
+        String cityName = body.getName();
+
+        City findCity = queryFactory
+                .selectFrom(city)
+                .where(city.name.eq(cityName))
+                .fetchFirst();
+
+        if (findCity == null) {
+            return new ResBody(404, "No match found");
+        }
+
+        findCity.updateViewedDate(LocalDate.now());
+        refreshContext();
+
+        return new ResBody(200, findCity.toString());
+    }
+
+    private void refreshContext() {
+        em.flush();
+        em.clear();
+    }
 }

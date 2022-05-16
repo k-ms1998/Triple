@@ -5,6 +5,7 @@ import Triple.assignment2.Controller.body.ResBody;
 import Triple.assignment2.Service.CityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,16 @@ public class CityController {
         return cityService.save(body);
     }
 
+    /**
+     * 단건조회
+     *
+     * @param body
+     */
+    @GetMapping("/city")
+    public ResBody city(@RequestBody CityBody body) {
+
+        return cityService.fetchCity(body);
+    }
 
 
 }

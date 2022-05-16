@@ -42,4 +42,18 @@ public class City {
         this.name = name;
         this.viewedDate = viewedDate;
     }
+
+    public void updateViewedDate(LocalDate currentDate) {
+        this.viewedDate = currentDate;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id = " + this.getId() +
+                ", name = " + this.getName() +
+                ", createdDate = " + this.getCreatedDate() +
+                ", viewedDate = " + this.getViewedDate() +
+                "}";
+    }
 }
