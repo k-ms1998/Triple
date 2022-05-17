@@ -2,6 +2,7 @@ package Triple.assignment2.Service;
 
 import Triple.assignment2.Controller.body.CityBody;
 import Triple.assignment2.Controller.body.ResBody;
+import Triple.assignment2.Controller.dto.CityDTO;
 import Triple.assignment2.Entity.City;
 import Triple.assignment2.Repository.CityRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -33,12 +34,14 @@ public class CityService {
     public ResBody save(CityBody body) {
 
         if (checkDuplicateCity(body)) {
-            return new ResBody(404, "City already exists");
+            return new ResBody(404, "City already exists", null);
         }
 
-        cityRepository.save(new City(body.getName()));
+        City savedCity = cityRepository.save(new City(body.getName()));
 
-        return new ResBody(200, "City Saved");
+        List<CityDTO> resCity = cityToDTO(List.of(savedCity));
+
+        return new ResBody(200, "City Saved", resCity);
     }
 
     private boolean checkDuplicateCity(CityBody body) {
@@ -64,13 +67,15 @@ public class CityService {
                 .fetchFirst();
 
         if (findCity == null) {
-            return new ResBody(404, "No match found");
+            return new ResBody(404, "No match found", null);
         }
 
         findCity.updateViewedDate(LocalDate.now());
         refreshContext();
 
-        return new ResBody(200, findCity.toString());
+        List<CityDTO> resCity = cityToDTO(List.of(findCity));
+
+        return new ResBody(200, "City searched by city name", resCity);
     }
 
     private void refreshContext() {
@@ -115,7 +120,9 @@ public class CityService {
            cities.addAll(remainingCities);
        }
 
-       return new ResBody(200, cities.toString());
+       List<CityDTO> resCity = cityToDTO(cities);
+
+       return new ResBody(200, "Cities in order of specification", resCity);
    }
 
     private List<City> fetchCitiesOngoing(LocalDate today) {
@@ -180,4 +187,11 @@ public class CityService {
                 .map(c -> c.getId()).collect(Collectors.toList());
     }
 
+
+    private List<CityDTO> cityToDTO(List<City> cities) {
+        return cities.stream()
+                .map(c -> {
+                    return new CityDTO(c.getName(), c.getViewedDate());
+                }).collect(Collectors.toList());
+    }
 }

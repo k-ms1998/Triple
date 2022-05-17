@@ -18,6 +18,10 @@ public class TripBody {
 
     }
 
+    public TripBody(Long userId) {
+        this.userId = userId;
+    }
+
     public TripBody(Long userId, Long cityId, String startDate, String endDate) {
         this.userId = userId;
         this.cityId = cityId;

@@ -2,10 +2,8 @@ package Triple.assignment2.Service;
 
 import Triple.assignment2.Controller.body.ResBody;
 import Triple.assignment2.Controller.body.TripBody;
-import Triple.assignment2.Entity.City;
-import Triple.assignment2.Entity.QTrip;
-import Triple.assignment2.Entity.Trip;
-import Triple.assignment2.Entity.User;
+import Triple.assignment2.Controller.dto.TripDTO;
+import Triple.assignment2.Entity.*;
 import Triple.assignment2.Repository.TripRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static Triple.assignment2.Entity.QCity.city;
 import static Triple.assignment2.Entity.QTrip.*;
 import static Triple.assignment2.Entity.QTrip.trip;
+import static Triple.assignment2.Entity.QUser.user;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,27 +41,28 @@ public class TripService {
         LocalDate localDateEnd = stringToLocalDate(endDate);
 
         if (localDateStart.isAfter(localDateEnd)) {
-            return new ResBody(404, "End date must be later than the start date");
+            return new ResBody(404, "End date must be later than the start date", null);
         }
         if (checkStartDate(localDateStart)) {
-            return new ResBody(404, "Start date must be later than today");
+            return new ResBody(404, "Start date must be later than today", null);
         }
         if (checkDuplicateTrip(body)) {
-            return new ResBody(404, "User already has a trip planned at this location");
+            return new ResBody(404, "User already has a trip planned at this location", null);
         }
 
-        tripRepository.save(createTrip(body, localDateStart, localDateEnd));
+        Trip savedTrip = tripRepository.save(createTrip(body, localDateStart, localDateEnd));
+        List<TripDTO> resTrips = tripToDTO(List.of(savedTrip));
 
-        return new ResBody(200, "Trip Saved");
+        return new ResBody(200, "Trip Saved", resTrips);
     }
 
-    public ResBody fetchTrips(TripBody body) {
+    public ResBody<Trip> fetchTrips(TripBody body) {
         Long userId = body.getUserId();
 
         List<Trip> findTrips = findTripsByUser(userId);
+        List<TripDTO> resTrips = tripToDTO(findTrips);
 
-
-        return new ResBody(200, "Message");
+        return new ResBody(200, "Trips By User", resTrips);
     }
 
     private boolean checkStartDate(LocalDate startDate) {
@@ -99,7 +102,21 @@ public class TripService {
     private List<Trip> findTripsByUser(Long userId) {
         return queryFactory
                 .selectFrom(trip)
+                .innerJoin(trip.user, user).fetchJoin()
+                .leftJoin(trip.city, city).fetchJoin()
                 .where(trip.user.id.eq(userId))
                 .fetch();
+    }
+
+    private List<TripDTO> tripToDTO(List<Trip> findTrips) {
+        return findTrips.stream()
+                .map(t -> {
+                    String cityName = t.getCity().getName();
+                    Long userId = t.getUser().getId();
+                    LocalDate startDate = t.getStartDate();
+                    LocalDate endDate = t.getEndDate();
+
+                    return new TripDTO(cityName, userId, startDate, endDate);
+                }).collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package Triple.assignment2.Entity;
 
+import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -7,7 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@ToString(of = {"id"})
+@Getter
 public class Trip {
 
     @Id
@@ -35,5 +36,16 @@ public class Trip {
         this.user = user;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "id=" + this.getId() +
+                ", city=" + this.getCity().getId() +
+                ", user=" + this.getUser().getId() +
+                ", startDate=" + this.getStartDate()+
+                ", endDate=" + this.getEndDate() +
+                '}';
     }
 }
