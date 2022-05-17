@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 
+import static Triple.assignment2.Entity.QTrip.*;
 import static Triple.assignment2.Entity.QTrip.trip;
 
 @Service
@@ -78,11 +79,11 @@ public class TripService {
 
     private boolean checkDuplicateTrip(TripBody body) {
         Long userId = body.getUserId();
-        Long city = Long.valueOf(body.getCity());
+        Long cityId = body.getCityId();
 
         Trip findTrip = queryFactory
-                .selectFrom(QTrip.trip)
-                .where(QTrip.trip.user.id.eq(userId), QTrip.trip.city.id.eq(city))
+                .selectFrom(trip)
+                .where(trip.user.id.eq(userId), trip.city.id.eq(cityId))
                 .fetchFirst();
 
         if (findTrip != null) {
@@ -92,7 +93,7 @@ public class TripService {
     }
 
     private Trip createTrip(TripBody body, LocalDate startDate, LocalDate endDate) {
-        return new Trip(new City(Long.valueOf(body.getCity())), new User(body.getUserId()), startDate, endDate);
+        return new Trip(new City(body.getCityId()), new User(body.getUserId()), startDate, endDate);
     }
 
     private List<Trip> findTripsByUser(Long userId) {
