@@ -38,13 +38,13 @@ public class TripService {
         LocalDate localDateEnd = stringToLocalDate(endDate);
 
         if (localDateStart.isAfter(localDateEnd)) {
-            return new ResBody(404, "End date must be later that the start date");
+            return new ResBody(404, "End date must be later than the start date");
         }
         if (checkStartDate(localDateStart)) {
             return new ResBody(404, "Start date must be later than today");
         }
         if (checkDuplicateTrip(body)) {
-            return new ResBody(404, "User has already a trip planned at this location");
+            return new ResBody(404, "User already has a trip planned at this location");
         }
 
         tripRepository.save(createTrip(body, localDateStart, localDateEnd));
