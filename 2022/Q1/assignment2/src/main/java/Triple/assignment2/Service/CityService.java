@@ -44,19 +44,6 @@ public class CityService {
         return new ResBody(200, "City Saved", resCity);
     }
 
-    private boolean checkDuplicateCity(CityBody body) {
-
-        City findCity = queryFactory
-                .selectFrom(city)
-                .where(city.name.eq(body.getName()))
-                .fetchFirst();
-
-        if (findCity != null) {
-            return true;
-        }
-        return false;
-    }
-
     public ResBody fetchCity(CityBody body) {
         Long cityId = body.getId();
         String cityName = body.getName();
@@ -76,11 +63,6 @@ public class CityService {
         List<CityDTO> resCity = cityToDTO(List.of(findCity));
 
         return new ResBody(200, "City searched by city name", resCity);
-    }
-
-    private void refreshContext() {
-        em.flush();
-        em.clear();
     }
 
     /**
@@ -124,6 +106,19 @@ public class CityService {
 
        return new ResBody(200, "Cities in order of specification", resCity);
    }
+
+    private boolean checkDuplicateCity(CityBody body) {
+
+        City findCity = queryFactory
+                .selectFrom(city)
+                .where(city.name.eq(body.getName()))
+                .fetchFirst();
+
+        if (findCity != null) {
+            return true;
+        }
+        return false;
+    }
 
     private List<City> fetchCitiesOngoing(LocalDate today) {
 
@@ -193,5 +188,10 @@ public class CityService {
                 .map(c -> {
                     return new CityDTO(c.getName(), c.getViewedDate());
                 }).collect(Collectors.toList());
+    }
+
+    private void refreshContext() {
+        em.flush();
+        em.clear();
     }
 }
