@@ -10,9 +10,9 @@ import java.util.List;
 public class ResBody<T>{
     private Integer status;
     private String message;
-    private T data;
+    private List<T> data;
 
-    public ResBody(Integer status, String message, T data) {
+    public ResBody(Integer status, String message, List<T> data) {
         this.status = status;
         this.message = message;
         this.data = data;
