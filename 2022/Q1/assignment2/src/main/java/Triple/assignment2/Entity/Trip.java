@@ -1,10 +1,13 @@
 package Triple.assignment2.Entity;
 
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@ToString(of = {"id"})
 public class Trip {
 
     @Id

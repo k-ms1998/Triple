@@ -24,13 +24,23 @@ public class CityController {
     /**
      * 단건조회
      *
-     * @param body
+     * @param request
      */
     @GetMapping("/city")
-    public ResBody city(@RequestBody CityBody body) {
+    public ResBody city(@RequestBody CityBody request) {
 
-        return cityService.fetchCity(body);
+        return cityService.fetchCity(request);
     }
 
 
+    /**
+     * 도시리스트 조회
+     * @param request
+     * @return
+     */
+    @GetMapping("/cities")
+    public ResBody citiesList(@RequestBody CityBody request) {
+
+        return cityService.fetchCitiesList(request);
+    }
 }
