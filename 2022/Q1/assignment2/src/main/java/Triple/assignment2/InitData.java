@@ -57,7 +57,25 @@ public class InitData {
             em.persist(new City("Seoul"));
             em.persist(new City("Ulsan"));
             em.persist(new City("Busan"));
-            em.persist(new City("Incheon"));
+
+            City incheon = new City("Incheon");
+            em.persist(incheon);
+            incheon.updateCreatedDate(LocalDate.of(2022,05,18));
+
+            City jeju = new City("Jeju");
+            em.persist(jeju);
+            jeju.updateCreatedDate(LocalDate.of(2022, 05, 17));
+
+            City yeosu = new City("Yeosu");
+            yeosu.updateViewedDate(LocalDate.of(2022,5,16));
+            em.persist(yeosu);
+
+            City sejong = new City("Sejong");
+            sejong.updateViewedDate(LocalDate.of(2022,4,16));
+            em.persist(sejong);
+
+            em.flush();
+            em.clear();
         }
     }
 
@@ -69,13 +87,26 @@ public class InitData {
 
         @Transactional
         public void init() {
-            em.persist(new Trip(em.find(City.class, 4L), em.find(User.class, 2L), LocalDate.of(2022,04,01), LocalDate.of(2022,05,01)));
-            em.persist(new Trip(em.find(City.class, 6L), em.find(User.class, 3L), LocalDate.of(2022,06,01), LocalDate.of(2022,06,03)));
+            City seoul = findCity("Seoul");
+            City ulsan = findCity("Ulsan");
+            City busan = findCity("Busan");
+            City incheon = findCity("Incheon");
+
+            em.persist(new Trip(em.find(City.class, seoul.getId()), em.find(User.class, 2L), LocalDate.of(2022,04,01), LocalDate.of(2022,05,01)));
+            em.persist(new Trip(em.find(City.class, busan.getId()), em.find(User.class, 3L), LocalDate.of(2022,06,01), LocalDate.of(2022,06,03)));
 
 
-            em.persist(new Trip(em.find(City.class, 4L), em.find(User.class, 1L), LocalDate.now(), LocalDate.of(2022, 06, 01)));
-            em.persist(new Trip(em.find(City.class, 4L), em.find(User.class, 2L), LocalDate.of(2022,05,01), LocalDate.of(2022,06,01)));
-            em.persist(new Trip(em.find(City.class, 5L), em.find(User.class, 3L), LocalDate.of(2022,04,01), LocalDate.of(2022,06,01)));
+            em.persist(new Trip(em.find(City.class, seoul.getId()), em.find(User.class, 1L), LocalDate.now(), LocalDate.of(2022, 06, 01)));
+            em.persist(new Trip(em.find(City.class, seoul.getId()), em.find(User.class, 2L), LocalDate.of(2022,05,01), LocalDate.of(2022,06,01)));
+            em.persist(new Trip(em.find(City.class, ulsan.getId()), em.find(User.class, 3L), LocalDate.of(2022, 04, 01), LocalDate.of(2022, 06, 01)));
+
+
+        }
+
+        public City findCity(String cityName) {
+            return em.createQuery("select c from City c where c.name = :cityName", City.class)
+                    .setParameter("cityName", cityName)
+                    .getSingleResult();
 
         }
     }

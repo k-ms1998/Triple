@@ -58,12 +58,25 @@ public class InitTestData {
             em.persist(new City("Seoul"));
             em.persist(new City("Ulsan"));
             em.persist(new City("Busan"));
-            em.persist(new City("Incheon"));
 
-            em.persist(new City("Jeju", LocalDate.of(2022, 5,17)));
-            em.persist(new City("Yeosu", LocalDate.of(2022, 3,17)));
-            em.persist(new City("Sejong", LocalDate.of(2022, 4,17)));
+            City incheon = new City("Incheon");
+            em.persist(incheon);
+            incheon.updateCreatedDate(LocalDate.of(2022,05,18));
 
+            City jeju = new City("Jeju");
+            em.persist(jeju);
+            jeju.updateCreatedDate(LocalDate.of(2022, 05, 16));
+
+            City yeosu = new City("Yeosu");
+            yeosu.updateViewedDate(LocalDate.of(2022,5,16));
+            em.persist(yeosu);
+
+            City sejong = new City("Sejong");
+            sejong.updateViewedDate(LocalDate.of(2022,4,16));
+            em.persist(sejong);
+
+            em.flush();
+            em.clear();
         }
     }
 
