@@ -2,11 +2,13 @@ package Triple.assignment2.Controller.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@ToString
 public class CityDTO {
 
     private String cityName;
@@ -15,8 +17,6 @@ public class CityDTO {
 
     public CityDTO() {
     }
-
-
 
     public CityDTO(String cityName, LocalDate createdDate) {
         this.cityName = cityName;

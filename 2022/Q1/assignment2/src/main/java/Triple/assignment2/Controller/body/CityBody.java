@@ -10,4 +10,10 @@ public class CityBody {
     private Long id;
     private String name;
 
+    public CityBody() {
+    }
+
+    public CityBody(String name) {
+        this.name = name;
+    }
 }

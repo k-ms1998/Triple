@@ -120,7 +120,7 @@ public class CityService {
         return false;
     }
 
-    private List<City> fetchCitiesOngoing(LocalDate today) {
+    public List<City> fetchCitiesOngoing(LocalDate today) {
 
        return queryFactory
                .select(city)
@@ -132,7 +132,7 @@ public class CityService {
 
     }
 
-    private List<City> fetchCitiesExpected(LocalDate today, int limit) {
+    public List<City> fetchCitiesExpected(LocalDate today, int limit) {
 
         return queryFactory
                 .select(city)
@@ -144,7 +144,7 @@ public class CityService {
                 .fetch();
     }
 
-    private List<City> fetchCitiesExpectedByCreatedDate(LocalDate today, int limit, List<City> cities) {
+    public List<City> fetchCitiesExpectedByCreatedDate(LocalDate today, int limit, List<City> cities) {
         List<Long> cityIds = fetchAllCityIds(cities);
 
         return queryFactory
@@ -156,7 +156,7 @@ public class CityService {
 
     }
 
-    private List<City> fetchCitiesExpectedByViewedDate(LocalDate today, int limit, List<City> cities) {
+    public List<City> fetchCitiesExpectedByViewedDate(LocalDate today, int limit, List<City> cities) {
         List<Long> cityIds = fetchAllCityIds(cities);
 
         return queryFactory
@@ -167,7 +167,7 @@ public class CityService {
                 .fetch();
     }
 
-    private List<City> fetchRemainingCities(int limit, List<City> cities) {
+    public List<City> fetchRemainingCities(int limit, List<City> cities) {
         List<Long> cityIds = fetchAllCityIds(cities);
 
         return queryFactory
@@ -186,7 +186,7 @@ public class CityService {
     private List<CityDTO> cityToDTO(List<City> cities) {
         return cities.stream()
                 .map(c -> {
-                    return new CityDTO(c.getName(), c.getViewedDate());
+                    return new CityDTO(c.getName(), c.getCreatedDate(), c.getViewedDate());
                 }).collect(Collectors.toList());
     }
 

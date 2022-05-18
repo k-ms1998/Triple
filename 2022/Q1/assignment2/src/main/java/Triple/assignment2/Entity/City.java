@@ -22,7 +22,7 @@ public class City {
     private String name;
 
     @CreatedDate
-    @Column(updatable = false)
+//    @Column(updatable = false)
     private LocalDate createdDate;
 
     private LocalDate viewedDate;
@@ -43,13 +43,14 @@ public class City {
         this.name = name;
     }
 
-    public City(String name, LocalDate viewedDate) {
-        this.name = name;
-        this.viewedDate = viewedDate;
+    public void updateViewedDate(LocalDate currentDate) {
+
+        this.viewedDate = currentDate;
     }
 
-    public void updateViewedDate(LocalDate currentDate) {
-        this.viewedDate = currentDate;
+    public void updateCreatedDate(LocalDate createdDate) {
+
+        this.createdDate = createdDate;
     }
 
     @Override
